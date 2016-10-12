@@ -1,7 +1,7 @@
 module.exports={
     entry:'./main.js',
     output:{
-        path:'build',
+        path:'./build',
         filename:'buble.js'
     },
     devServer:{
