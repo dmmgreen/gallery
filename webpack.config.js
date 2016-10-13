@@ -2,7 +2,12 @@ module.exports={
     entry:'./main.js',
     output:{
         path:'./build',
+<<<<<<< HEAD
         filename:'./buble.js'
+=======
+        filename:'buble.js',
+        publicPath:'./'
+>>>>>>> refs/remotes/origin/master
     },
     devServer:{
         inline:true,
@@ -27,7 +32,12 @@ module.exports={
             {
                 test:/\.css$/,
                 exclude:/node_modules/,
-                loader:'style-loader!css-loader'
+                loader:'style-loader!css-loader!autoprefixer-loader'
+            },
+            {
+                test:/\.(png|jpg|woff|woff2|eot|ttf|svg)$/,
+                exclude:/node_modules/,
+                loader:'url-loader?limit=1024'
             }
         ]
     }
