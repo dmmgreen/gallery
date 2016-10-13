@@ -1,0 +1,6 @@
+上传打包是iconfont不能显示
+
+问题已经解决，原来我把limit的含义理解错了
+
+If the file is greater than the limit the file-loader is used and all query parameters are passed to it.
+我设置的limit：10000 也就是说当文件大于10000/1024 时才会使用url-loader 否则会直接打包成Data Url 格式
