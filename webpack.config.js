@@ -2,12 +2,7 @@ module.exports={
     entry:'./main.js',
     output:{
         path:'./build',
-<<<<<<< HEAD
-        filename:'./buble.js'
-=======
-        filename:'buble.js',
-        publicPath:'./'
->>>>>>> refs/remotes/origin/master
+        filename:'buble.js'
     },
     devServer:{
         inline:true,

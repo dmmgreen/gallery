@@ -21445,6 +21445,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactDom = __webpack_require__(34);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
 	__webpack_require__(173);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -21455,7 +21459,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var imagesData = __webpack_require__(177);
+	var imagesData = __webpack_require__(181);
 
 	imagesData = function getImageUrl(imgArr) {
 	    for (var i = 0, j = imgArr.length; i < j; i++) {
@@ -21466,29 +21470,332 @@
 	    return imgArr;
 	}(imagesData);
 
-	var App = function (_React$Component) {
-	    _inherits(App, _React$Component);
+	//ȡ����ֵ
+	function getRangeRandom(low, hight) {
+	    return Math.ceil(Math.random() * (hight - low) + low);
+	}
 
-	    function App() {
+	//ȡ��б�Ƕ�-30��30������ֵ
+
+	function getRangeRotate() {
+	    return (Math.random() > 0.5 ? '' : '-') + Math.ceil(Math.random() * 30);
+	}
+
+	var ImgFigure = function (_React$Component) {
+	    _inherits(ImgFigure, _React$Component);
+
+	    function ImgFigure() {
+	        _classCallCheck(this, ImgFigure);
+
+	        return _possibleConstructorReturn(this, (ImgFigure.__proto__ || Object.getPrototypeOf(ImgFigure)).apply(this, arguments));
+	    }
+
+	    _createClass(ImgFigure, [{
+	        key: 'handleClick',
+	        value: function handleClick(ev) {
+	            ev.stopPropagation();
+	            ev.preventDefault();
+	            if (this.props.arrange.isCenter) {
+	                this.props.inverse();
+	            } else {
+	                this.props.center();
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            var styleObj = {};
+
+	            // ����props������ָ��������ͼƬ��λ�ã���ʹ��
+	            if (this.props.arrange.pos) {
+	                styleObj = this.props.arrange.pos;
+	            }
+
+	            // ����props������ָ��������ͼƬ����ת�Ƕȣ���ʹ��
+	            if (this.props.arrange.rotate) {
+	                ['MozTransform', 'WebkitTransform', 'msTransform', 'transform'].forEach(function (value) {
+	                    styleObj[value] = 'rotate(' + this.props.arrange.rotate + 'deg)';
+	                }.bind(this));
+	            }
+
+	            // ����props������ָ��������ͼƬҪ���棬��ʹ��
+	            var imgFigureClassName = 'img-figure';
+	            imgFigureClassName += this.props.arrange.isInverse ? ' is-inverse' : '';
+
+	            // ����props������ָ��������ͼƬ������λ�ã���ʹ��
+	            if (this.props.arrange.isCenter) {
+	                styleObj.zIndex = 11;
+	            }
+
+	            return _react2.default.createElement(
+	                'figure',
+	                { className: imgFigureClassName, style: styleObj, onClick: function onClick(ev) {
+	                        return _this2.handleClick(ev);
+	                    } },
+	                _react2.default.createElement('img', { src: this.props.data.imageUrl, alt: this.props.data.title }),
+	                _react2.default.createElement(
+	                    'figcaption',
+	                    null,
+	                    _react2.default.createElement(
+	                        'h2',
+	                        { className: 'img-title' },
+	                        this.props.data.title,
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'img-back' },
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                this.props.data.desc
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return ImgFigure;
+	}(_react2.default.Component);
+
+	var ControlUnits = function (_React$Component2) {
+	    _inherits(ControlUnits, _React$Component2);
+
+	    function ControlUnits() {
+	        _classCallCheck(this, ControlUnits);
+
+	        return _possibleConstructorReturn(this, (ControlUnits.__proto__ || Object.getPrototypeOf(ControlUnits)).apply(this, arguments));
+	    }
+
+	    _createClass(ControlUnits, [{
+	        key: 'handleClick',
+	        value: function handleClick(ev) {
+	            ev.stopPropagation();
+	            ev.preventDefault();
+	            if (this.props.arrange.isCenter) {
+	                this.props.inverse();
+	            } else {
+	                this.props.center();
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this4 = this;
+
+	            var controlClass = 'controll-unit';
+	            controlClass += this.props.arrange.isCenter ? ' is-center' : '';
+	            controlClass += this.props.arrange.isInverse ? ' is-inverse' : '';
+	            return _react2.default.createElement('span', { className: controlClass, onClick: function onClick(ev) {
+	                    return _this4.handleClick(ev);
+	                } });
+	        }
+	    }]);
+
+	    return ControlUnits;
+	}(_react2.default.Component);
+
+	var App = function (_React$Component3) {
+	    _inherits(App, _React$Component3);
+
+	    function App(props) {
 	        _classCallCheck(this, App);
 
-	        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+	        var _this5 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+	        _this5.state = {
+	            imgsArrangeArr: []
+	        };
+	        return _this5;
 	    }
 
 	    _createClass(App, [{
+	        key: 'center',
+	        value: function center(index) {
+	            return function () {
+	                return this.rearrange(index);
+	            }.bind(this);
+	        }
+	    }, {
+	        key: 'inverse',
+	        value: function inverse(index) {
+	            return function () {
+	                var imgsArrangeArr = this.state.imgsArrangeArr;
+
+	                imgsArrangeArr[index].isInverse = !imgsArrangeArr[index].isInverse;
+
+	                this.setState({
+	                    imgsArrangeArr: imgsArrangeArr
+	                });
+	            }.bind(this);
+	        }
+	    }, {
+	        key: 'rearrange',
+	        value: function rearrange(centerIndex) {
+	            var imgsArr = this.state.imgsArrangeArr,
+	                constant = this.constant,
+	                vPosRange = constant.vPosRange,
+	                hPosRange = constant.hPosRange,
+	                centerPos = constant.centerPos,
+	                hPosRangeLeftSecX = hPosRange.leftSecX,
+	                hPosRangeRightSecX = hPosRange.rightSecX,
+	                hPosRangeY = hPosRange.y,
+	                vPosRangeX = vPosRange.x,
+	                vPosRangetopY = vPosRange.topY,
+	                imgsTopArr = [],
+	                topImgSpliceIndex = 0,
+	                topImgNum = Math.floor(Math.random() * 2),
+	                imgsCenterArr = imgsArr.splice(centerIndex, 1);
+
+	            imgsCenterArr[0] = {
+	                pos: centerPos,
+	                isCenter: true,
+	                rotate: 0
+	            };
+
+	            //ȡ��Ҫ�����ϲ���ͼƬ״̬��Ϣ(splice,������������ɾ�������ұ��浽imgsTopArr)
+	            topImgSpliceIndex = Math.ceil(Math.random() * (imgsArr.length - topImgNum));
+	            imgsTopArr = imgsArr.splice(topImgSpliceIndex, topImgNum);
+
+	            //����λ���ϲ���ͼƬ
+
+	            imgsTopArr.map(function (value, index) {
+	                imgsTopArr[index] = {
+	                    pos: {
+	                        left: getRangeRandom(vPosRangeX[0], vPosRangeX[1]),
+	                        top: getRangeRandom(vPosRangetopY[0], vPosRangetopY[1])
+	                    },
+	                    isCenter: false,
+	                    rotate: getRangeRotate()
+	                };
+	            });
+
+	            //��������������ͼƬ
+
+	            for (var i = 0, j = imgsArr.length, k = j / 2; i < j; i++) {
+	                var hPosRangeLORX = null;
+	                if (i < k) {
+	                    hPosRangeLORX = hPosRangeLeftSecX;
+	                } else {
+	                    hPosRangeLORX = hPosRangeRightSecX;
+	                }
+
+	                imgsArr[i] = {
+	                    pos: {
+	                        left: getRangeRandom(hPosRangeLORX[0], hPosRangeLORX[1]),
+	                        top: getRangeRandom(hPosRangeY[0], hPosRangeY[1])
+	                    },
+	                    isCenter: false,
+	                    rotate: getRangeRotate()
+	                };
+	            }
+
+	            //splice ������������-������ָ��λ�ò���������Ԫ�ء�������������һ����������ʼλ�ã����ڶ���������0�����������������������
+
+	            if (imgsTopArr && imgsTopArr[0]) {
+	                imgsArr.splice(topImgSpliceIndex, 0, imgsTopArr[0]);
+	            }
+
+	            imgsArr.splice(centerIndex, 0, imgsCenterArr[0]);
+
+	            this.setState({
+	                imgsArrangeArr: imgsArr
+	            });
+	        }
+	    }, {
+	        key: 'constant',
+	        value: function constant() {
+	            return {
+	                centerPos: {
+	                    left: 0,
+	                    top: 0
+	                },
+	                hPosRange: {
+	                    leftSecX: [0, 0],
+	                    rightSecX: [0, 0],
+	                    y: [0, 0]
+	                },
+	                vPosRange: {
+	                    x: [0, 0],
+	                    topY: [0, 0]
+	                }
+	            };
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            //�õ���̨��С
+	            var stageDom = this.refs.stage,
+	                stageW = stageDom.scrollWidth,
+	                stageH = stageDom.scrollHeight,
+	                halfstageW = stageW / 2,
+	                halfstageH = stageH / 2;
+
+	            //����ͼƬ��С
+	            var imgDom = _reactDom2.default.findDOMNode(this.refs.imgfigure0),
+	                imgW = imgDom.scrollWidth,
+	                imgH = imgDom.scrollHeight,
+	                halfimgW = imgW / 2,
+	                halfimgH = imgH / 2;
+
+	            /*��Χ��С*/
+
+	            //��������ͼƬλ��
+
+	            this.constant.centerPos = {
+	                left: halfstageW - halfimgW,
+	                top: halfstageH - halfimgH
+	            };
+
+	            //ˮƽλ�÷�Χ��С
+	            this.constant.hPosRange = {
+	                leftSecX: [-halfimgW, halfstageW - halfimgW * 3],
+	                rightSecX: [halfstageW + halfimgW, stageW - halfimgW],
+	                y: [-halfimgH, stageH - halfimgH]
+	            };
+	            //��ֱλ�÷�Χ��С
+	            this.constant.vPosRange = {
+	                x: [halfstageW - imgW, halfstageW],
+	                topY: [-halfimgH, halfstageH - halfimgH * 3]
+	            };
+
+	            this.rearrange(0);
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var controllerUnits = [],
 	                imgFigures = [];
+	            imagesData.map(function (value, index) {
+	                if (!this.state.imgsArrangeArr[index]) {
+	                    this.state.imgsArrangeArr[index] = {
+	                        pos: {
+	                            left: 0,
+	                            top: 0
+	                        },
+	                        isCenter: false,
+	                        rotate: 0,
+	                        isInverse: false
+	                    };
+	                }
+	                imgFigures.push(_react2.default.createElement(ImgFigure, { data: value, key: index, arrange: this.state.imgsArrangeArr[index], center: this.center(index), inverse: this.inverse(index), ref: 'imgfigure' + index }));
+	                controllerUnits.push(_react2.default.createElement(ControlUnits, { data: value, key: index, arrange: this.state.imgsArrangeArr[index], center: this.center(index), inverse: this.inverse(index) }));
+	            }.bind(this));
 	            return _react2.default.createElement(
 	                'section',
-	                { className: 'stage' },
+	                { className: 'stage', ref: 'stage' },
 	                _react2.default.createElement(
 	                    'section',
-	                    null,
-	                    'dfd'
+	                    { className: 'img-sec' },
+	                    imgFigures
 	                ),
-	                _react2.default.createElement('nav', null)
+	                _react2.default.createElement(
+	                    'nav',
+	                    { className: 'controll-nav' },
+	                    controllerUnits
+	                )
 	            );
 	        }
 	    }]);
@@ -21508,14 +21815,14 @@
 	var content = __webpack_require__(174);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(176)(content, {});
+	var update = __webpack_require__(180)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./style.css", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./style.css");
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/autoprefixer-loader/index.js!./style.css", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/autoprefixer-loader/index.js!./style.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -21533,7 +21840,7 @@
 
 
 	// module
-	exports.push([module.id, "html,body{\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: #f2f2f2;\r\n    margin: 0px;\r\n    padding: 0px;\r\n}\r\n.content{\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n\r\n.stage{\r\n    width: 100%;\r\n    height: 100%;\r\n    position: relative;\r\n}", ""]);
+	exports.push([module.id, "\r\n@font-face {\r\n    font-family: \"iconsfont\";\r\n    src: url(" + __webpack_require__(176) + ") format(\"embedded-opentype\"),\r\n    url(" + __webpack_require__(177) + ") format(\"woff\"),\r\n    url(" + __webpack_require__(178) + ") format(\"truetype\"),\r\n    url(" + __webpack_require__(179) + ") format(\"svg\");\r\n}\r\n\r\n\r\nhtml,body{\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: #f2f2f2;\r\n    margin: 0px;\r\n    padding: 0px;\r\n}\r\n.content{\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n\r\n.stage{\r\n    width: 100%;\r\n    height: 100%;\r\n    position: relative;\r\n}\r\n\r\n\r\n.img-sec{\r\n    width: 100%;\r\n    height: 100%;\r\n    position: relative;\r\n    background-color: #ddd;\r\n    overflow: hidden;\r\n}\r\n\r\n\r\n.img-figure{\r\n    position: absolute;\r\n    width: 320px;\r\n    height: 360px;\r\n    padding: 40px;\r\n    box-sizing: border-box;\r\n    background-color: #fff;\r\n    margin: 0;\r\n    cursor: pointer;\r\n    -webkit-transform-origin: 0 50% 0;\r\n            transform-origin: 0 50% 0;\r\n    -webkit-transform-style: preserve-3d;\r\n            transform-style: preserve-3d;\r\n    -webkit-transition: all ease-in-out 0.6s;\r\n    transition: all ease-in-out 0.6s;\r\n}\r\n.img-title{\r\n    font-size: 16px;\r\n    text-align: center;\r\n    padding: 10px 0;\r\n}\r\n\r\n.img-back {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n\r\n    width: 100%;\r\n    height: 100%;\r\n    padding: 50px 40px;\r\n    overflow: auto;\r\n\r\n    color: #a7a0a2;\r\n    font-size: 22px;\r\n    line-height: 1.25;\r\n    text-align: left;\r\n\r\n    background-color: #fff;\r\n\r\n    box-sizing: border-box;\r\n    -webkit-transform: rotateY(180deg) translateZ(1px);\r\n            transform: rotateY(180deg) translateZ(1px);\r\n    -webkit-backface-visibility: hidden;\r\n            backface-visibility: hidden;\r\n}\r\n.img-back p {\r\n    margin: 0;\r\n}\r\n\r\n.is-inverse {\r\n    -webkit-transform: translate(320px) rotateY(180deg);\r\n            transform: translate(320px) rotateY(180deg);\r\n}\r\n\r\n.controll-nav{\r\n    position: absolute;\r\n    width: 100%;\r\n    bottom:50px;\r\n    left: 0px;\r\n    text-align: center;\r\n    z-index: 101;\r\n}\r\n\r\n.controll-unit{\r\n    display: inline-block;\r\n    margin: 0 5px;\r\n    width: 30px;\r\n    height: 30px;\r\n\r\n    text-align: center;\r\n    vertical-align: middle;\r\n\r\n    cursor: pointer;\r\n    background-color: #aaa;\r\n    border-radius: 50%;\r\n\r\n    -webkit-transform: scale(.5);\r\n\r\n            transform: scale(.5);\r\n    -webkit-transition: background-color .3s, -webkit-transform .6s ease-in-out;\r\n    transition: background-color .3s, -webkit-transform .6s ease-in-out;\r\n    transition: transform .6s ease-in-out, background-color .3s;\r\n    transition: transform .6s ease-in-out, background-color .3s, -webkit-transform .6s ease-in-out;\r\n}\r\n\r\n.controll-unit.is-center {\r\n    background-color: #888;\r\n\r\n    -webkit-transform: scale(1);\r\n\r\n            transform: scale(1);\r\n}\r\n.controll-unit.is-center::after {\r\n     color: #fff;\r\n     font-family: \"iconsfont\";\r\n     font-size: 80%;\r\n     line-height: 30px;\r\n\r\n     content: \"\\E605\";\r\n\r\n     -webkit-font-smoothing: antialiased;\r\n     -moz-osx-font-smoothing: grayscale;\r\n }\r\n\r\n.controll-unit.is-inverse {\r\n     background-color: #555;\r\n\r\n     -webkit-transform: rotateY(180deg);\r\n\r\n             transform: rotateY(180deg);\r\n}\r\n", ""]);
 
 	// exports
 
@@ -21596,6 +21903,30 @@
 
 /***/ },
 /* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "49b2db5e8583dc1e4038a5ef9b1998c8.eot";
+
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "499e4a51a64ed2c3c9129809eeb7dc3f.woff";
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "547ed0dcb659292268a3db2e264050f6.ttf";
+
+/***/ },
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "ab5cfd6b94f1ae0b95d760b3094021c8.svg";
+
+/***/ },
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -21847,7 +22178,7 @@
 
 
 /***/ },
-/* 177 */
+/* 181 */
 /***/ function(module, exports) {
 
 	module.exports = [
