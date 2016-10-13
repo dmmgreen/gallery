@@ -2,8 +2,7 @@ module.exports={
     entry:'./main.js',
     output:{
         path:'./build',
-        filename:'buble.js',
-        publicPath:'./'
+        filename:'buble.js'
     },
     devServer:{
         inline:true,
@@ -33,7 +32,7 @@ module.exports={
             {
                 test:/\.(png|jpg|woff|woff2|eot|ttf|svg)$/,
                 exclude:/node_modules/,
-                loader:'url-loader?limit=1024'
+                loader:'url-loader?limit=8192'
             }
         ]
     }
