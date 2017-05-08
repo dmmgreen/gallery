@@ -1,4 +1,4 @@
-上传打包是iconfont不能显示
+﻿上传打包是iconfont不能显示
 
 问题已经解决，原来我把limit的含义理解错了
 
@@ -7,3 +7,6 @@ If the file is greater than the limit the file-loader is used and all query para
 
 
 内联的base64的图片地址，图片要小于8k，直接的url的地址则不解析
+
+
+测试能到master分支上吗
